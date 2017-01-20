@@ -36,6 +36,10 @@ xtable.data.frame <- function(x, caption = NULL, label = NULL, align = NULL,
   ## Patch for logicals bug, no 1911
   ## David Scott, <d.scott@auckland.ac.nz>, 2012-08-10
   x[, logicals] <- lapply(x[, logicals, drop = FALSE], as.character)
+
+  dates <- unlist(lapply(x, is.Date))
+  x[, dates] <- lapply(x[, dates, drop = FALSE], as.character)
+
   characters <- unlist(lapply(x, is.character))
   factors <- unlist(lapply(x, is.factor))
   ints <- sapply(x, is.integer)
@@ -450,3 +454,5 @@ xtable.summary.sphet <- function(x, caption = NULL, label = NULL, align = NULL,
                              align = align, digits = digits,
                              display = display, auto = auto, ...))
 }
+
+is.Date <- function(x)  class(x) %in% c("Date", "POSIXct", "POSIXlt")
